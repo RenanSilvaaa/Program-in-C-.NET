@@ -135,6 +135,6 @@ public class Program
                 }
             } 
             break;
-        } // Fim do switch (choise)
-    } // Fim do ConsultItems
-} // Fim da classe Program
+        } 
+    } 
+} 
