@@ -1,1 +1,116 @@
+namespace MeuProjeto;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
+public class RepositorioProdutos
+{    
+    public void ConsultarEstoque()
+    {
+        Console.WriteLine();
+        Console.WriteLine("Products that we have: ");
+        
+        List<string> items = new List<string>()
+        {
+            "Galaxy A25",
+            "Book: The Naturals",
+            "Book: Killer Instinct",
+            "Book: All in"
+        };
+        
+        Console.WriteLine("Items: " + string.Join(Environment.NewLine, items));
+        Console.WriteLine();
+        Console.WriteLine("Do you want buy some of them? (s/n)");
+        string choose = (Console.ReadLine() ?? "").ToLower();
+        Console.WriteLine();
+        
+        if (choose == "s")
+        {
+            Console.WriteLine("Ok, I'll show you the currently prices of them");
+            Console.WriteLine("----------------------------------------");
+            List<string> prices = new List<string>()
+            
+        {
+            "Galaxy A25 - R$1499,00",
+            "The Naturals - R$72,11",
+            "Killer Instinct - R$76,12",
+            "All in - R$79,64"
+        };
+        List<decimal> NumbersValues = new List<decimal>()
+        {
+          1499.00m,
+          72.11m,
+          76.12m,
+          79.64m  
+        };
+        Console.WriteLine("Prices: " + string.Join(Environment.NewLine, prices));
+        Console.WriteLine("----------------------------------------");
+        Console.WriteLine();
+        Console.WriteLine("What're the numbers of items that you want to buy? (separete by ,)");
+        string entrance = Console.ReadLine() ?? "";
+        string [] selectedItems = entrance.Split(",");
+        List<int> numbersList = new List<int> ();
+        List<string> boughtItems = new List<string>();
+        List<string> prices_Items_bought = new List<string>();
+        decimal valuetotal = 0;
+        foreach(string s in selectedItems)
+            {
+                if(int.TryParse(s.Trim(), out int number_01))
+                {
+                    numbersList.Add(number_01);
+                    int indice = number_01 -1;
+                    if(indice >= 0 && indice < items.Count)
+                    {
+                        boughtItems.Add(items[indice]);
+                        prices_Items_bought.Add(prices[indice]);
+                        valuetotal += NumbersValues[indice];
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Warning: Item {number_01} does not exist.");
+                    }
+                    
+                }
+            }
+            Console.WriteLine("You add the items: \n" + string.Join( "/ ", boughtItems));
+            Console.WriteLine();
+            Console.WriteLine("Values of your items: \n"+ string.Join( "/ ", prices_Items_bought));
+            Console.WriteLine();
+            Console.WriteLine("To see the finish value type 's' ");
+            string answer = Console.ReadLine() ?? "";
+            if (answer == "s")
+            {
+                Console.WriteLine($"Final total cost: R${valuetotal}" );
+            }
+            else
+            {
+                Console.WriteLine("No problem");
+            }
+
+            Console.WriteLine("Do you want do export it?(type s or n)");
+            string formate = Console.ReadLine() ?? "";
+            if (formate == "s")
+            {
+                string filepath = "itemsAndPrices.txt";
+                List<string> saving_informations_items = new List<string> ();
+                saving_informations_items.Add("-------------------------INFORMATIONS ABOUT ITEMS AND PRICES------------------------------   ");
+                saving_informations_items.Add("ITEMS YOU BOUGHT:");
+                saving_informations_items.AddRange(prices_Items_bought);
+                saving_informations_items.Add("------------------------------------------------------------------------------------------");
+                saving_informations_items.Add("FINAL PRICE: ");
+                saving_informations_items.Add($"Total Paid: R${valuetotal}");
+                
+                File.WriteAllLines(filepath, saving_informations_items);
+                Console.WriteLine("Archive create sucessfull");
+            }
+        }
+        else if (choose == "n")
+        {
+            Console.WriteLine("Ok, you can just see");
+        }
+        else
+        {
+            Console.WriteLine("Wrong option");
+        }         
+    }
+}
